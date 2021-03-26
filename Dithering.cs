@@ -11,7 +11,7 @@ namespace task_1
 {
     class Dithering
     {
-        public Image ApplyFilter(Image image, int[] levels)
+        public Image Apply(Image image, int[] levels)
         {
             Bitmap bmp = new Bitmap(image);
             int width = bmp.Width;

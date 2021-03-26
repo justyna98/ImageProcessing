@@ -18,6 +18,7 @@ namespace task_1
         Image original;
         Filters filter = new Filters();
         Dithering dither= new Dithering();
+        Quantization kmeans = new Quantization();
         ConvolutioinalFilters blurFilter = new ConvolutioinalFilters(FixedParameters.blur, 0, 9);
         ConvolutioinalFilters gaussianBlurFilter = new ConvolutioinalFilters(FixedParameters.blur, 0, 8);
         ConvolutioinalFilters sharpenFilter = new ConvolutioinalFilters(FixedParameters.gaussianbBlur, 0, 15);
@@ -34,7 +35,15 @@ namespace task_1
             groupBox5.Enabled = false;
 
         }
+        public void Unblock()
+        {
+            groupBox1.Enabled = true;
+            groupBox2.Enabled = true;
+            groupBox3.Enabled = true;
+            groupBox4.Enabled = true;
+            groupBox5.Enabled = true;
 
+        }
 
         //Load image
         private void button10_Click(object sender, EventArgs e)
@@ -56,11 +65,7 @@ namespace task_1
                     pictureBox1.Image = original;
                     filtered= Image.FromFile(filePath);
                     pictureBox2.Image = filtered;
-                    groupBox1.Enabled = true;
-                    groupBox2.Enabled = true;
-                    groupBox3.Enabled = true;
-                    groupBox4.Enabled = true;
-                    groupBox5.Enabled = true;
+                    Unblock();
 
                 }
             }
@@ -148,13 +153,13 @@ namespace task_1
         //Image Size
         private void radioButton2_Click(object sender, EventArgs e)
         {
-            if (radioButton2.Checked)
+            if (radioButton2.Checked && pictureBox1.SizeMode == PictureBoxSizeMode.AutoSize)
             {
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
 
             }
-            else
+            else if(radioButton1.Checked && pictureBox1.SizeMode == PictureBoxSizeMode.Zoom)
             {
                 pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
                 pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -204,8 +209,12 @@ namespace task_1
         private void button15_Click(object sender, EventArgs e)
         {
             int k = (int)numericUpDown1.Value;
- 
+            filtered = kmeans.Apply(filtered, k);
+            pictureBox2.Image = filtered;
+
+
         }
+
 
         //Random dithering - Color 
         private void button14_Click(object sender, EventArgs e)
@@ -214,7 +223,7 @@ namespace task_1
             int g = (int)numericUpDown5.Value;
             int b = (int)numericUpDown6.Value;
             int[] colorvals = { r, g, b };
-            filtered = dither.ApplyFilter(filtered, colorvals);
+            filtered = dither.Apply(filtered, colorvals);
             pictureBox2.Image = filtered;
         }
 
@@ -223,10 +232,44 @@ namespace task_1
         {
             int g = (int)numericUpDown3.Value;
             int[] graylevels = { g };
-            filtered = dither.ApplyFilter(filtered, graylevels);
+            filtered = dither.Apply(filtered, graylevels);
             pictureBox2.Image = filtered;
         }
 
-
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text == "lena")
+            {
+                original = Properties.Resources.lena;
+                pictureBox1.Image = original;
+                filtered = Properties.Resources.lena;
+                pictureBox2.Image = filtered;
+            }
+            if (comboBox1.Text == "ara")
+            {
+                original = Properties.Resources.ara;
+                pictureBox1.Image = original;
+                filtered = Properties.Resources.ara;
+                pictureBox2.Image = filtered;
+            }
+            if (comboBox1.Text == "puppies")
+            {
+                original = Properties.Resources.puppies;
+                pictureBox1.Image = original;
+                filtered = Properties.Resources.puppies;
+                pictureBox2.Image = filtered;
+            }
+            if (comboBox1.Text == "glacier")
+            {
+                original = Properties.Resources.glacier;
+                pictureBox1.Image = original;
+                filtered = Properties.Resources.glacier;
+                pictureBox2.Image = filtered;
+            }
+            Unblock();
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
+            radioButton1.Checked=true;
+        }
     }
 }

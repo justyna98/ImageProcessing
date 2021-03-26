@@ -67,6 +67,7 @@
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.button14 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -223,7 +224,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(89, 533);
+            this.button10.Location = new System.Drawing.Point(110, 531);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(199, 23);
             this.button10.TabIndex = 5;
@@ -233,7 +234,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(543, 533);
+            this.button11.Location = new System.Drawing.Point(520, 531);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(199, 23);
             this.button11.TabIndex = 6;
@@ -243,7 +244,7 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(313, 533);
+            this.button12.Location = new System.Drawing.Point(315, 531);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(199, 23);
             this.button12.TabIndex = 7;
@@ -318,7 +319,12 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(82, 46);
+            this.numericUpDown1.Location = new System.Drawing.Point(7, 46);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
@@ -335,7 +341,7 @@
             // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(6, 45);
+            this.button15.Location = new System.Drawing.Point(57, 45);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(78, 22);
             this.button15.TabIndex = 4;
@@ -526,11 +532,27 @@
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "lena",
+            "ara",
+            "puppies",
+            "glacier"});
+            this.comboBox1.Location = new System.Drawing.Point(12, 533);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(92, 21);
+            this.comboBox1.TabIndex = 13;
+            this.comboBox1.Text = "demo img";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.panel2);
@@ -614,6 +636,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
