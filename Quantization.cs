@@ -11,16 +11,16 @@ namespace task_1
 {
     class NewColor
     {
-        public int R;
-        public int G;
-        public int B;
+        public int R { get; set; }
+        public int G{ get; set; }
+        public int B { get; set; }
+
         public NewColor(int r, int g, int b)
         {
             R = r;
             G = g;
             B = b;
         }
-
 
         public static int EucliceanDistance(NewColor c1, NewColor c2)
         {
@@ -29,36 +29,46 @@ namespace task_1
             int blueDifference = c1.B - c2.B;
 
             return redDifference * redDifference + greenDifference * greenDifference + blueDifference * blueDifference;
-
         }
 
-        internal static System.Drawing.Color FromArgb(int v1, int v2, int v3)
+        public override bool Equals(object obj)
         {
-            throw new NotImplementedException();
+            var color = obj as NewColor;
+            return color != null &&
+                   R == color.R &&
+                   G == color.G &&
+                   B == color.B;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1520100960;
+            hashCode = hashCode * -1521134295 + R.GetHashCode();
+            hashCode = hashCode * -1521134295 + G.GetHashCode();
+            hashCode = hashCode * -1521134295 + B.GetHashCode();
+            return hashCode;
         }
     }
     class Cluster
     {
-        public int noOfcolors { get; set; }
+        public int noOfcolors = 0;
         public int sumR { get; set; }
         public int sumG { get; set; }
         public int sumB { get; set; }
-
+        public List<double> distances = new List<double>();
         public NewColor centroid;
-        public int index { get; set; }
+        public int id { get; set; }
 
-        public Cluster(NewColor centroid, int index, int count = 0)
+        public Cluster(NewColor centroid, int index)
         {
             this.centroid = centroid;
-            this.index = index;
+            this.id = index;
         }
-
-
 
     }
     class Quantization
     {
-        public Image Apply(Image image, int k)
+        public unsafe  Image Apply(Image image, int k)
         {
             Bitmap bmp = new Bitmap(image);
             int width = bmp.Width;
@@ -66,14 +76,15 @@ namespace task_1
 
             //makes copy of bitmap to memory for fast processing.
             BitmapData srcData = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            
             int stride = srcData.Stride;
             int bytes = stride * srcData.Height;
             byte[] buffer = new byte[bytes];
             byte[] result = new byte[bytes];
             System.Runtime.InteropServices.Marshal.Copy(srcData.Scan0, buffer, 0, bytes);
             bmp.UnlockBits(srcData);
-            //do sth to color channels
-            result = KMeans(buffer, result, width, height, stride, k);
+
+            result = KMeans( buffer,result,  k);
 
 
 
@@ -84,45 +95,53 @@ namespace task_1
             resImg.UnlockBits(resData);
             return resImg;
         }
-        public byte[] KMeans(byte[] buffer, byte[] result, int width, int height, int stride, int k)
+        public byte[] KMeans( byte[] buffer, byte[] result,   int k)
         {
-            HashSet<NewColor> colors = new HashSet<NewColor>();
-            List<NewColor> pixels = new List<NewColor>();
             Random rand = new Random();
-            //Find all unique colors in the image
+            var colors = new HashSet<NewColor>();
+            //uniqe colors in an image
             for (int i = 0; i < buffer.Length; i = i + 4)
             {
                 NewColor color = new NewColor(buffer[i + 2], buffer[i + 1], buffer[i]);
                 colors.Add(color);
-                pixels.Add(color);
+                
             }
-            // Adjust number of centroids if needed
+            List<NewColor> allColors = colors.ToList();
+            // limit k to existing number of colors
             if (k > colors.Count)
             {
                 k = colors.Count;
             }
-            //Selecting random centroids
             NewColor[] centroids = new NewColor[k];
-            NewColor[] newCentroids = new NewColor[k];
+            NewColor[] avgCentroids = new NewColor[k];
+            // random initial centroids
             for (int i = 0; i < k; i++)
             {
-                int c = rand.Next(colors.Count);
-                centroids[i] = colors.ElementAt(c);
+                centroids[i] = allColors[rand.Next(allColors.Count)];
             }
+            
             bool changed =true;
-
-            while (changed == true)
+            int iteration = 0;
+            //till centroids are changing and maximum no of iteratioins is not achieved
+            while (changed && iteration <100)
             {
+                iteration++;
                 List<Cluster> clusters = new List<Cluster>();
-                for(int i=0; i < k; i++)
+                //assign centroid to a cluster
+                for (int i=0; i < k; i++)
                 {
                     clusters.Add(new Cluster(centroids[i], i));
+                    clusters[i].sumR =  centroids[i].R;
+                    clusters[i].sumG =  centroids[i].G;
+                    clusters[i].sumB =  centroids[i].B;
+                    clusters[i].noOfcolors= 1;
                 }
-                for(int pix=0; pix < pixels.Count; pix++)
+                // for all available colors assign clusters and calculate the resulting sums of RGB values
+                for(int col=0; col < allColors.Count; col++)
                 {
-                    double minDistance = 100000;
+                    double minDistance = double.MaxValue;
                     int clusterIndex = -1;
-                    NewColor color = pixels[pix];
+                    NewColor color = allColors[col];
                     for(int c = 0; c < centroids.Length; c++)
                     {
                         double distance = NewColor.EucliceanDistance(color, centroids[c]);
@@ -134,49 +153,48 @@ namespace task_1
                     }
                     for (int cl=0; cl < clusters.Count; cl++)
                     {
-                        if (clusters[cl].index == clusterIndex)
+                        if (clusters[cl].id == clusterIndex)
                         {
-                            clusters[clusterIndex].sumR = (clusters[clusterIndex].sumR + color.R);
-                            clusters[clusterIndex].sumG = (clusters[clusterIndex].sumG + color.G);
-                            clusters[clusterIndex].sumB = (clusters[clusterIndex].sumB + color.B);
+                            clusters[clusterIndex].distances.Add(minDistance);
+                            clusters[clusterIndex].sumR += color.R;
+                            clusters[clusterIndex].sumG += color.G;
+                            clusters[clusterIndex].sumB += color.B;
                             clusters[clusterIndex].noOfcolors+=1;
                         }
                     }
 
                 }
-
-                for(int j = 0; j < centroids.Length; j++)
+                //for all centroids calculate the avg color in their cluster: if it equals centroid exit the loop, 
+                //otherwise assign the calculated avg and continue loop
+                for (int j = 0; j < centroids.Length; j++)
                 {
                     int numOfColors = clusters[j].noOfcolors;
-                    if (numOfColors == 0)
-                    {
-                        numOfColors = 1;
-                    }
-                    newCentroids[j] = new NewColor((clusters[j].sumR / numOfColors), (clusters[j].sumG / numOfColors), (clusters[j].sumB / numOfColors));
-                    if(centroids[j].R== newCentroids[j].R && centroids[j].G == newCentroids[j].G && centroids[j].B == newCentroids[j].B)
+                    avgCentroids[j] = new NewColor((clusters[j].sumR / numOfColors), (clusters[j].sumG / numOfColors), (clusters[j].sumB / numOfColors));
+                    if(centroids[j].R== avgCentroids[j].R && centroids[j].G == avgCentroids[j].G && centroids[j].B == avgCentroids[j].B)
                     {
                         changed = false;
                     }
                     else
                     {
-                        centroids[j].R = newCentroids[j].R;
-                        centroids[j].G = newCentroids[j].G;
-                        centroids[j].B = newCentroids[j].B;
+                        centroids[j].R = avgCentroids[j].R;
+                        centroids[j].G = avgCentroids[j].G;
+                        centroids[j].B = avgCentroids[j].B;
                     }
                 }
             }
+            //for all pixels
             for (int i = 0; i < buffer.Length; i = i + 4)
             {
                 NewColor color = new NewColor(buffer[i + 2], buffer[i + 1], buffer[i]);
-                double minDistance = 100000;
+                double minDistance = double.MaxValue;
                 int clusterIndex = -1;
-                for (int c = 0; c < centroids.Length; c++)
+                for (int m = 0; m < k; m++)
                 {
-                    double distance = NewColor.EucliceanDistance(color, centroids[c]);
+                    double distance = NewColor.EucliceanDistance(color, centroids[m]);
                     if (distance < minDistance)
                     {
                         minDistance = distance;
-                        clusterIndex = c;
+                        clusterIndex = m;
                     }
                 }
                 result[i + 3] = 255;
@@ -184,8 +202,6 @@ namespace task_1
                 result[i + 1] = (byte)centroids[clusterIndex].G;
                 result[i ] = (byte)centroids[clusterIndex].B;
             }
-
-
 
             return result;
 

@@ -63,11 +63,13 @@ namespace task_1
 
                 for(int k = 0; k < graylevel-1; k++)
                 {
+                    //if bigger than highest graylevel it must be 255
                     if (grayscale >= threshold[graylevel-2])
                     {
                         result[i] = result[i + 1] = result[i + 2] = 255;
                         break;
                     }
+                    //check every threshold from the array and assign RGB value
                     else if(grayscale<threshold[k])
                     {
                         result[i] = result[i + 1] = result[i + 2] = (byte)(255 * k / (graylevel - 1));
@@ -93,7 +95,7 @@ namespace task_1
                 int blue= buffer[i];
                 int green = buffer[i+1];
                 int red = buffer[i+2];
-                //creating treshold for gray levels
+                //creating treshold for color values
                 for (int j = 0; j < r - 1; j++)
                 {
                     int lowBound = 255 * j / (r - 1);

@@ -33,8 +33,11 @@ namespace task_1
             groupBox3.Enabled = false;
             groupBox4.Enabled = false;
             groupBox5.Enabled = false;
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
 
         }
+        //Unblock buttons
         public void Unblock()
         {
             groupBox1.Enabled = true;
@@ -145,7 +148,6 @@ namespace task_1
         //Gamma
         private void button4_Click(object sender, EventArgs e)
         {
-
             pictureBox2.Image = filter.ApplyFilter(pictureBox2.Image, filter.Gamma);
         }
 
@@ -211,8 +213,6 @@ namespace task_1
             int k = (int)numericUpDown1.Value;
             filtered = kmeans.Apply(filtered, k);
             pictureBox2.Image = filtered;
-
-
         }
 
 
@@ -236,8 +236,10 @@ namespace task_1
             pictureBox2.Image = filtered;
         }
 
+        //Choose demo pictures
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+   
             if (comboBox1.Text == "lena")
             {
                 original = Properties.Resources.lena;
@@ -252,13 +254,7 @@ namespace task_1
                 filtered = Properties.Resources.ara;
                 pictureBox2.Image = filtered;
             }
-            if (comboBox1.Text == "puppies")
-            {
-                original = Properties.Resources.puppies;
-                pictureBox1.Image = original;
-                filtered = Properties.Resources.puppies;
-                pictureBox2.Image = filtered;
-            }
+
             if (comboBox1.Text == "glacier")
             {
                 original = Properties.Resources.glacier;

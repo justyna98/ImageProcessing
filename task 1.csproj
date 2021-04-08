@@ -94,9 +94,6 @@
     <None Include="Resources\ara_ararauna_luc_viatour.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\puppies.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\glacier.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

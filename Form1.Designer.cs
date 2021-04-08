@@ -389,7 +389,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(123, 74);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Greyscale";
+            this.tabPage1.Text = "Gray";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // label1
@@ -538,7 +538,6 @@
             this.comboBox1.Items.AddRange(new object[] {
             "lena",
             "ara",
-            "puppies",
             "glacier"});
             this.comboBox1.Location = new System.Drawing.Point(12, 533);
             this.comboBox1.Name = "comboBox1";
