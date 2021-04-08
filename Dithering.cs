@@ -83,6 +83,7 @@ namespace task_1
 
             return result;
         }
+        //Accordingly to grayscale, with each color channel treated separately 
         public byte[] RandomDitheringColor(byte[] buffer, byte[] result, int width, int height, int stride, int[] colorVals)
         {
             int r = colorVals[0];

@@ -91,10 +91,10 @@
     <None Include="Resources\lena.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ara_ararauna_luc_viatour.jpg" />
+    <None Include="Resources\glacier.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\glacier.jpg" />
+    <None Include="Resources\ara_ararauna_luc_viatour.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
