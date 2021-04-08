@@ -21,6 +21,6 @@ Image editor with the following selected filters.
     - R G B values for color dithering
 
 Result for K-means color quantization with 10 clusters:
-![](screen.jpg)
+![](k_screen.jpg)
  
  
