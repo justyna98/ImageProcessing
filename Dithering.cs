@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace task_1
 {
+    //Random dithering for color and grayscale images
+
     class Dithering
     {
         public Image Apply(Image image, int[] levels)

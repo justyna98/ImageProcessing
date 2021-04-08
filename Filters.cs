@@ -6,8 +6,10 @@ using System.Windows.Forms;
 
 namespace task_1
 {
+    //Functional filters + grayscale
     class Filters
     {
+        
         public Image ApplyFilter(Image image, Func< byte[], byte[], int, int, int, byte[]> filter )
         {
             Bitmap bmp = new Bitmap(image);
@@ -33,6 +35,8 @@ namespace task_1
             resImg.UnlockBits(resData);
             return resImg;
         }
+
+ 
         public byte[] Inversion( byte[] buffer, byte[] result, int width, int height, int stride)
         {
             int current = 0;

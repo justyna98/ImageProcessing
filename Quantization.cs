@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace task_1
 {
+    //K-means color quantization
+
     class NewColor
     {
         public int R { get; set; }

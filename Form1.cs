@@ -240,7 +240,7 @@ namespace task_1
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
    
-            if (comboBox1.Text == "lena")
+            if (comboBox1.Text == "Lena")
             {
                 original = Properties.Resources.lena;
                 pictureBox1.Image = original;

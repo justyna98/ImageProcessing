@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace task_1
 {
+    //Convolutional filters
     class ConvolutioinalFilters
     {
         public double[,] kernel;
