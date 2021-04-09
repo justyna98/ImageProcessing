@@ -19,7 +19,7 @@ Image editor with the following selected filters.
 - Random Dithering:
     - k graylevels for grayscale
     - R G B values for color dithering
-
+## Eexamples
 Result for K-means color quantization with 6 clusters:
 ![](k_screen.jpg)
  
