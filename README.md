@@ -1,5 +1,5 @@
 # Image processing
-Image editor with the following selected filters.
+WinForms image editor with the following selected filters.
 ## Features
 
 - Function filters: 
